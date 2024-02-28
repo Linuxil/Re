@@ -1,0 +1,99 @@
+{% include 'wrapper.html' %}
+
+{% block content %}
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0">
+                <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+                    <h2 class="text-primary mb-0"><i class="fa fa-user-edit"></i></h2>
+                </a>
+           
+                <div class="navbar-nav align-items-center ms-auto">
+                        <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fa fa-user me-lg-2" aria-hidden="true"></i>
+                            <span class="d-none d-lg-inline-flex">{{ admin }}</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">My Profile</a>
+                            <a href="#" class="dropdown-item">Settings</a>
+                            <a href="/logout" class="dropdown-item">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- Navbar End -->
+
+
+
+            <!-- Recent Sales Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary text-center rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h6 class="mb-0">Employees &nbsp &nbsp &nbsp &nbsp &nbsp<a href="/add_employee/"><i class="fa fa-plus-square" aria-hidden="true" style="font-size: 20px;"></i></a></h6>
+                        
+                        <form method="post">
+                            {% csrf_token %}
+                       <select style="border: none; background-color: #191C24; color: white;" name="selected_option">
+                        <option value="none" disabled selected  >Roles</option>
+                        {% for i in positions %}
+                        <option value="{{ i.title }}">{{ i.title }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-primary me-lg-3">Sorting</button>
+                    </form>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table text-start align-middle table-bordered table-hover mb-0">
+                            <thead>
+                                <tr class="text-white">
+                                    <th scope="col"><input class="form-check-input" type="checkbox" id="master_checkbox"></th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Surname</th>
+                                    <th scope="col">Phone</th>
+                                    <th scope="col">Telegram</th>
+                                    <th scope="col">Position</th>
+                                    <th scope="col">Detail</th>
+                                </tr>
+                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+                                <script>
+                                    $(document).ready(function() {
+                                        // Barcha checkboxlarni tekshirish
+                                        $('#master_checkbox').change(function() {
+                                            // Master checkbox holatini olish
+                                            var masterChecked = $(this).prop('checked');
+                                            // Barcha boshqa checkboxlarni master checkbox holatiga moslash
+                                            $('.other_checkbox').prop('checked', masterChecked);
+                                        });
+                                    });
+                                </script>
+                            </thead>
+                            <tbody>
+                                {% for employee in employees %}
+                                <tr>
+                                    <td><input class="form-check-input other_checkbox" type="checkbox"></td>
+                                    <td>{{ employee.name }}</td>
+                                    <td>{{ employee.surname }}</td>
+                                    <td>{{ employee.phone }}</td>
+                                    <td>{{ employee.telegram }}</td>
+                                    <td>{{ employee.position }}</td>
+                                    <td class="d-flex align-items-center justify-content-between"><a class="btn btn-sm btn-primary" style="width: 50%;" href="/employee_detail/{{ employee.id }}">Detail</a>
+                                    <a href="/delete_employee/{{ employee.id }}"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                                    
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Recent Sales End -->
+
+
+         
+        </div>
+
+
+{% endblock content %}
